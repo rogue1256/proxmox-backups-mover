@@ -1,20 +1,7 @@
-import os
 import json
-from dataclasses import dataclass
+import os
 
-
-@dataclass
-class BackupInfo:
-    friendly_name: str
-    vm_id: int
-    target_path: os.path
-
-
-@dataclass
-class BackupConfig:
-    """Config information"""
-    source_path: str
-    vm_configs: list[BackupInfo]
+from config_parser.models import BackupConfig, BackupInfo
 
 
 def parse_config(absolute_path: str) -> BackupConfig:
