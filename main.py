@@ -16,12 +16,7 @@ class FailReason(Enum):
 
 
 def main():
-    logger.debug("Trying to load a local default config")
-    config_path = file_operatios.get_config_absolute_path()
-    logger.debug("Initializing config")
-    config_provider.initialize_config(config_path)
     config = config_provider.get_config()
-
     logger.info("Starting collecting information about the files")
     files_info = [(vm_config, file_operatios.get_related_files(config.source_path, vm_config.vm_id))
                   for vm_config in config.vm_configs]
@@ -51,6 +46,10 @@ def main():
 
 if __name__ == '__main__':
     try:
+        logger.debug("Trying to load a local default config")
+        config_path = file_operatios.get_config_absolute_path()
+        logger.debug("Initializing config")
+        config_provider.initialize_config(config_path)
         main()
     except Exception as err:
         logger.exception(err)
