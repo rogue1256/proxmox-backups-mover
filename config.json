@@ -1,0 +1,47 @@
+{
+  "backup_source_path": [
+    "/",
+    "Users",
+    "aleksandrsmirnov",
+    "Development",
+    "Python",
+    "backup-mover",
+    "test_data"
+  ],
+  "backup_target_path": [
+    "/",
+    "Users",
+    "aleksandrsmirnov",
+    "Development",
+    "Python",
+    "backup-mover",
+    "target"
+  ],
+  "backup_configs": [
+    {
+      "friendly_name": "Home Assistant",
+      "vm_id": 1001,
+      "target_path_in_cloud": [
+        "Home_Assistant",
+        "pm_backup"
+      ]
+    },
+    {
+      "friendly_name": "Debian Docker Host",
+      "vm_id": 3001,
+      "target_path_in_cloud": [
+        "Pollux (Main Docker Ground)",
+        "pm_backup"
+      ]
+    },
+    {
+      "friendly_name": "pfSense Router",
+      "vm_id": 10000,
+      "target_path_in_cloud": [
+        "pfSense",
+        "pm_backup"
+      ]
+    }
+  ]
+}
+
