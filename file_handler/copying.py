@@ -37,6 +37,7 @@ def copy_vm_files(config: BackupMoverConfig, files_info: [(VmInfo, [str])]) -> [
                     logger.error(
                         f"Hashes {file2_hash} and {file2_hash} are different for files {origin_path} and {target_path}")
                     failed_files.append((origin_path, FailReason.DifferentSha256))
+                    os.remove(target_path)
                 else:
                     copied_files.append((origin_path, target_path))
                     logger.info(f"Successfully copied file {origin_path} to {target_path} with valid hashes")
@@ -44,6 +45,6 @@ def copy_vm_files(config: BackupMoverConfig, files_info: [(VmInfo, [str])]) -> [
                 logger.error(f"Could not correctly finish copying file {origin_path} to {target_path}")
                 logger.exception(err)
                 failed_files.append((origin_path, FailReason.CopyFailed))
-            finally:
-                result.append(VmFilesCopyResult(vm_info, copied_files, failed_files))
+        result.append(VmFilesCopyResult(vm_info, copied_files, failed_files))
+
     return result
