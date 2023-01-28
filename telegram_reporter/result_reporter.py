@@ -1,3 +1,5 @@
+import datetime
+
 import telegram
 import config_provider
 from file_handler.models import VmFilesCopyResult, FailReason
@@ -20,12 +22,10 @@ def convert_failed_reason_to_friendly(reason: FailReason) -> str:
 def prepare_message(results: [VmFilesCopyResult]) -> str:
     messages: [str] = []
     for res in results:
-        if len(res.failed_copies) == 0:
-            messages.append(f"*{res.vm.friendly_name}*\n Successfully copied all files")
+        if len(res.copied_files) == 0 and len(res.failed_copies) == 0:
             continue
-
         copied_files_str = ""
-        for (origin, target) in copied_files_str:
+        for (origin, target) in res.copied_files:
             copied_files_str += f"{origin} to {target}\n"
 
         failed_files_str = ""
@@ -33,29 +33,34 @@ def prepare_message(results: [VmFilesCopyResult]) -> str:
             failed_files_str += f"File {failed_file} failed to" \
                                 f" copy due to {convert_failed_reason_to_friendly(reason)}.\n"
 
-        msg = f"""
-*{res.vm.friendly_name}*
-_Succeeded files_
-```
-{copied_files_str}
-```
+        success_message = f"""
+_Succeeded files_``` 
+{copied_files_str}```"""
 
+        failed_files_message = f"""
 _Failed files:_
 ```
-{failed_files_str}
-```"""
-        messages.append(msg)
-    msg = ""
-    for m in messages:
-        msg += f"{m}\n"
+{failed_files_str}```"""
 
+        msg = f"""
+*{res.vm.friendly_name}*
+{success_message if copied_files_str.strip() != "" else ""}
+{failed_files_message if failed_files_str.strip() != "" else ""}"""
+        messages.append(msg)
+    msg = "*Report on backup copying process*\n"
+    for m in messages:
+        msg += f"{m}"
+
+    generated_on = str(datetime.datetime.now()).replace('-', '\\-').replace('.', '\\.')
+    msg += f"\n\nGenerated on: {generated_on}"
     return msg
 
 
 async def report(results: [VmFilesCopyResult]):
     bot = get_telegram_bot()
+    config = config_provider.get_config()
     async with bot:
-        await bot.send_message(prepare_message(results))
+        await bot.send_message(config.chat_id, prepare_message(results), telegram.constants.ParseMode.MARKDOWN_V2)
 
 
 async def report_error():

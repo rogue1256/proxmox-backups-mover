@@ -14,6 +14,7 @@ def main():
                   for vm_config in config.vm_configs]
     logger.info(f"Got the following VMs and corresponding files to process: {files_info}")
     file_copy_result = file_handler.copying.copy_vm_files(config, files_info)
+    # todo: Change type to something that describes Backup interaction, not copying result
     asyncio.run(telegram_reporter.result_reporter.report(file_copy_result))
 
 

@@ -44,6 +44,6 @@ def copy_vm_files(config: BackupMoverConfig, files_info: [(VmInfo, [str])]) -> [
                 logger.error(f"Could not correctly finish copying file {origin_path} to {target_path}")
                 logger.exception(err)
                 failed_files.append((origin_path, FailReason.CopyFailed))
-            finally:
-                result.append(VmFilesCopyResult(vm_info, copied_files, failed_files))
+        result.append(VmFilesCopyResult(vm_info, copied_files, failed_files))
+
     return result
