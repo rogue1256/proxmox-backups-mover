@@ -26,10 +26,13 @@ def prepare_message(results: [VmFilesCopyResult]) -> str:
             continue
         copied_files_str = ""
         for (origin, target) in res.copied_files:
-            copied_files_str += f"{origin} to {target}\n"
+            origin_sanitized = origin.replace("\\", "\\\\")
+            target_sanitized = target.replace("\\", "\\\\")
+            copied_files_str += f"{origin_sanitized} to {target_sanitized}\n"
 
         failed_files_str = ""
         for (failed_file, reason) in res.failed_copies:
+            failed_file_sanitized = failed_file.replace("\\", "\\\\")
             failed_files_str += f"File {failed_file} failed to" \
                                 f" copy due to {convert_failed_reason_to_friendly(reason)}.\n"
 
