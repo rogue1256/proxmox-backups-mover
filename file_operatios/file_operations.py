@@ -1,6 +1,10 @@
 import os
 import shutil
 
+from backup_mover_logger.logger import get_logger
+
+logger = get_logger()
+
 
 def get_config_absolute_path() -> os.path:
     return os.path.join(os.getcwd(), "config.json")
@@ -18,6 +22,7 @@ def get_related_files(source_path: os.path, vm_id: int) -> list[str]:
 
 def copy_files(source_path: os.path, target_path: os.path):
     if not os.path.isfile(source_path):
+        logger.error(f"Source path is not a file {source_path}")
         raise ValueError()
 
     shutil.copy2(source_path, target_path)

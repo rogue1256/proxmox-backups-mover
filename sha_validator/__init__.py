@@ -1,1 +1,1 @@
-from .validate import validate_files
+from .validate import calculate_sha256

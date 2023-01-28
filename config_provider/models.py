@@ -14,3 +14,4 @@ class BackupConfig:
     """Config information"""
     source_path: str
     vm_configs: list[BackupInfo]
+    log_level: str

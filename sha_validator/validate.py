@@ -1,14 +1,17 @@
 import hashlib
-import os
+
+from backup_mover_logger.logger import get_logger
+
+logger = get_logger()
 
 
 def calculate_sha256(path: str) -> str:
+    logger.debug(f"Calculating sha256 for a file {path}")
     hash_sha256 = hashlib.sha256()
     with open(path, "rb") as f:
         for chunk in iter(lambda: f.read(4096), b""):
             hash_sha256.update(chunk)
-    return hash_sha256.hexdigest()
 
-
-def validate_files(file1: os.path, file2: os.path) -> bool:
-    return calculate_sha256(file1) == calculate_sha256(file2)
+    sha = hash_sha256.hexdigest()
+    logger.debug(f"Calculated sha {sha} for file {path}")
+    return sha
