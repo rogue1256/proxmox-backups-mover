@@ -3,15 +3,17 @@ from dataclasses import dataclass
 
 
 @dataclass
-class BackupInfo:
+class VmInfo:
     friendly_name: str
     vm_id: int
     target_path: os.path
 
 
 @dataclass
-class BackupConfig:
+class BackupMoverConfig:
     """Config information"""
     source_path: str
-    vm_configs: list[BackupInfo]
+    vm_configs: list[VmInfo]
     log_level: str
+    telegram_AT: str
+    chat_id: int
